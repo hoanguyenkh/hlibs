@@ -1,4 +1,4 @@
-module github.com/trustwallet/golibs
+module github.com/hoank92/golibs
 
 go 1.15
 
