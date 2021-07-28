@@ -56,7 +56,7 @@ func Paging(p *Param, result interface{}) (*Paginator, error) {
 		offset = (p.Page - 1) * p.Limit
 	}
 
-	if errGet := db.Limit(p.Limit).Offset(offset).Find(result).Error; errGet != nil &&
+	if errGet := db.Limit(p.Limit).Offset(offset).Find(&result).Error; errGet != nil &&
 		!errors.Is(errGet, gorm.ErrRecordNotFound) {
 		return nil, errGet
 	}
