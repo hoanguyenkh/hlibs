@@ -10,7 +10,7 @@ type Param struct {
 	DB      *gorm.DB
 	Page    int
 	Limit   int
-	OrderBy []string
+	OrderBy string
 	ShowSQL bool
 }
 
@@ -37,11 +37,6 @@ func Paging(p *Param, result interface{}) (*Paginator, error) {
 	if p.Limit == 0 {
 		p.Limit = 20
 	}
-	if len(p.OrderBy) > 0 {
-		for _, o := range p.OrderBy {
-			db = db.Order(o)
-		}
-	}
 
 	done := make(chan bool, 1)
 	var paginator Paginator
@@ -56,7 +51,11 @@ func Paging(p *Param, result interface{}) (*Paginator, error) {
 		offset = (p.Page - 1) * p.Limit
 	}
 
-	if errGet := db.Limit(p.Limit).Offset(offset).Find(result).Error; errGet != nil &&
+	orderBy := p.OrderBy
+	if orderBy == "" {
+		orderBy = "id ASC"
+	}
+	if errGet := db.Scopes(paginate(offset, p.Limit)).Order(orderBy).Find(result).Error; errGet != nil &&
 		!errors.Is(errGet, gorm.ErrRecordNotFound) {
 		return nil, errGet
 	}
@@ -87,4 +86,9 @@ func Paging(p *Param, result interface{}) (*Paginator, error) {
 func getCounts(db *gorm.DB, anyType interface{}, done chan bool, count *int64) {
 	db.Model(anyType).Count(count)
 	done <- true
+}
+func paginate(offset int, limit int) func(db *gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Offset(offset).Limit(limit)
+	}
 }
