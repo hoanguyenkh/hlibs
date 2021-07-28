@@ -15,4 +15,5 @@ require (
 	github.com/trustwallet/golibs/network v0.0.0-20210618170901-faf662c21732
 	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897
 	gopkg.in/yaml.v2 v2.4.0
+	gorm.io/gorm v1.21.12
 )
