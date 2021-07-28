@@ -7,9 +7,9 @@ import (
 	"testing"
 
 	mapset "github.com/deckarep/golang-set"
+	"github.com/hoank92/hlibs/coin"
+	"github.com/hoank92/hlibs/mock"
 	"github.com/stretchr/testify/assert"
-	"github.com/trustwallet/golibs/coin"
-	"github.com/trustwallet/golibs/mock"
 )
 
 var (

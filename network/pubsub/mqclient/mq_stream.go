@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/hoank92/hlibs/network/pubsub"
 	"github.com/streadway/amqp"
-	"github.com/trustwallet/golibs/network/pubsub"
 	"go.uber.org/atomic"
 )
 

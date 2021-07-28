@@ -4,7 +4,7 @@ import (
 	"encoding/hex"
 	"strings"
 
-	"github.com/trustwallet/golibs/coin"
+	"github.com/hoank92/hlibs/coin"
 	"golang.org/x/crypto/sha3"
 )
 

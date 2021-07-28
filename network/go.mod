@@ -1,4 +1,4 @@
-module github.com/hoank92/golibs/network
+module github.com/hoank92/hlibs/network
 
 go 1.15
 

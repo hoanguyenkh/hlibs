@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/trustwallet/golibs/client"
+	"github.com/hoank92/hlibs/client"
 )
 
 type Client struct {

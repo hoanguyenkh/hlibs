@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	mapset "github.com/deckarep/golang-set"
-	"github.com/trustwallet/golibs/asset"
-	"github.com/trustwallet/golibs/coin"
-	"github.com/trustwallet/golibs/numbers"
+	"github.com/hoank92/hlibs/asset"
+	"github.com/hoank92/hlibs/coin"
+	"github.com/hoank92/hlibs/numbers"
 )
 
 const (
