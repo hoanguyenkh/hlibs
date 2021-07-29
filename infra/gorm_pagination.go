@@ -17,7 +17,7 @@ type Param struct {
 type Paginator struct {
 	TotalRecord int64       `json:"total_record"`
 	TotalPage   int         `json:"total_page"`
-	Records     interface{} `json:"records"`
+	Data        interface{} `json:"data"`
 	Offset      int         `json:"offset"`
 	Limit       int         `json:"limit"`
 	Page        int         `json:"page"`
@@ -51,18 +51,14 @@ func Paging(p *Param, result interface{}) (*Paginator, error) {
 		offset = (p.Page - 1) * p.Limit
 	}
 
-	orderBy := p.OrderBy
-	if orderBy == "" {
-		orderBy = "id ASC"
-	}
-	if errGet := db.Scopes(paginate(offset, p.Limit)).Order(orderBy).Find(result).Error; errGet != nil &&
+	if errGet := db.Scopes(paginate(offset, p.Limit, p.OrderBy)).Find(result).Error; errGet != nil &&
 		!errors.Is(errGet, gorm.ErrRecordNotFound) {
 		return nil, errGet
 	}
 	<-done
 
 	paginator.TotalRecord = count
-	paginator.Records = result
+	paginator.Data = result
 	paginator.Page = p.Page
 
 	paginator.Offset = offset
@@ -87,8 +83,12 @@ func getCounts(db *gorm.DB, anyType interface{}, done chan bool, count *int64) {
 	db.Model(anyType).Count(count)
 	done <- true
 }
-func paginate(offset int, limit int) func(db *gorm.DB) *gorm.DB {
+func paginate(offset int, limit int, orderBy string) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
-		return db.Offset(offset).Limit(limit)
+		if orderBy == "" {
+			return db.Offset(offset).Limit(limit)
+		} else {
+			return db.Offset(offset).Limit(limit).Order(orderBy)
+		}
 	}
 }
